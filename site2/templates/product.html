@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                {% for image_item in product.productimage_set.all %}
+
+                    <div class="product-image-item">
+                        <img src="{{ image_item.image.url }}" class="img-responsive">
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-lg-6">
+                <h1 class="text-center">
+                    {{ product.name }}
+                </h1>
+                <div class="">
+                    <p>
+                        Стоимость: {{ product.price }}
+                    </p>
+                </div>
+                <div>
+                      <!-- Nav tabs -->
+                      <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#discription" aria-controls="home" role="tab" data-toggle="tab">
+                                Описание
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#delivery" aria-controls="profile" role="tab" data-toggle="tab">
+                                Доставка
+                            </a>
+                        </li>
+                          <li role="presentation">
+                            <a href="#feedback" aria-controls="home" role="tab" data-toggle="tab">
+                                Оставить отзыв
+                            </a>
+                        </li>
+                          <li role="presentation">
+                            <a href="#feedback_BD" aria-controls="home" role="tab" data-toggle="tab">
+                                Отзывы
+                            </a>
+                        </li>
+                          <li role="presentation">
+                            <a href="#gps" aria-controls="home" role="tab" data-toggle="tab">
+                                Контакты
+                            </a>
+                        </li>
+                      </ul>
+
+                      <!-- Tab panes -->
+                      <div class="tab-content product-discription-tabs">
+                        <div role="tabpanel" class="tab-pane active" id="discription">
+                            {{ product.discription }}
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="delivery">
+                            <h4> Туристическое агентство "TravelPlanet" осуществляет доставку билетов на забронированные туры на дом по телефону: 8-937-883-02-73 </h4>
+                        </div>
+                          <div role="tabpanel" class="tab-pane" id="gps">
+                              <p><img src="{% static 'img/gps.png' %}" height="300" width="500"></p>
+                            <h4> Мы находимся по адресу: г. Ульяновск, ул. Инзенская, д.39 </h4>
+                              <h4> С нами можно связаться по телефону: 8-937-883-02-73 </h4>
+                              <h4> График работы: </h4>
+                               <h4> Понедельник-пятница: 10:00-18:00</h4>
+                              <h4> Суббота, воскресенье: выходной </h4>
+                        </div>
+                          <div role="tabpanel" class="tab-pane" id="feedback">
+{#                                <input id = "id_name" type="text" name="name">#}
+
+                              <form method = "post">
+                                  {%  csrf_token %}
+
+                                  <div class="form-group">
+                                        <div class="123">
+                                            <label> Фамилия, имя </label>
+                                            <input type="text" name="{{ form.name }}" class="form-control"
+                                                value="{{ request.POST.name }}"
+                                            >
+                                        </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                        <div class="123">
+                                            <label> E-mail </label>
+                                            <input type="text" name="{{ form.email }}" class="form-control"
+                                                value="{{ request.POST.email }}"
+                                            >
+                                        </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                        <div class="123">
+                                            <label> Отзыв </label>
+                                            <input type="text" name="{{ form.text }}" class="form-control"
+                                                value="{{ request.POST.text }}"
+                                            >
+                                        </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                        <div class="123">
+                                            <label> Дата </label>
+                                            <input type="date" name="{{ form.date }}" class="form-control"
+                                                value="{{ request.POST.date }}"
+                                            >
+                                        </div>
+                                  </div>
+
+                                <input type = 'submit' value = "Отправить отзыв">
+                              </form>
+
+                          </div>
+                          <div role="tabpanel" class="tab-pane" id="feedback_BD">
+                             <div class="container1">
+                              <p><span>Хасанов Андрей</span> E-mail: Andreika73@gmail.com</p>
+                              <p>Очень хороший тур в отель Azao Resort & Spa 4*. Понравилось то, что отель подходит для людей, которые любят активный отдых.</p>
+                                 <p> 03.03.2023</p>
+                            </div>
+                            <div class="container1">
+                              <p><span>Волкова Снежана</span> E-mail: Sneshka69@gmail.com</p>
+                              <p>Здравствуйте! Хочу поблагодарить персонал отеля за прекрасное обслуживание. Бассейн на территории отеля хороший. Осталась довольна.</p>
+                                <p> 19.05.2023</p>
+                            </div>
+                          </div>
+                      </div>
+                </div>
+                <div>
+                    <form id="form_buying_product" class="form-inline" action="{% url 'basket_adding' %}">{% csrf_token %}
+                        <div class="form-group">
+                            <input type="number" class="form-control" name="number" id="number">
+                        </div>
+                            <div class="form-group">
+                                <button type="submit" id="submit_btn" class="btn btn-success btn-buy"
+                                    data-product_id = "{{ product.id }}"
+                                    data-name = "{{ product.name }}"
+                                    data-price = "{{ product.price }}"
+                                >
+                                    Забронировать
+                                </button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
